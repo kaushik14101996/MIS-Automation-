@@ -133,6 +133,12 @@ def main():
 
                     # Preprocessing COmplete
 
+                    st.subheader("CC_dump")
+                    AgGrid(c1, height=400, return_mode='both')
+                    
+                    st.subheader("Logistic File")
+                    AgGrid(l1, height=400, return_mode='both')
+
                     # B2B Start
                     if len(B2B_merged_data) != 0:
                         B2B_merged_data = merged_data[merged_data['Type'] == 'B2B']
@@ -199,8 +205,9 @@ def main():
                     B2B_Report[numeric_columns] = B2B_Report[numeric_columns].applymap(lambda x: '{:.1f}'.format(x))            
                     B2B_Report = pd.concat([B2B_Report.iloc[:,:2],B2B_Report[new]], axis = 1) 
                     B2B = pd.DataFrame(B2B_Report)
-
-                    AgGrid(B2B_Report, height=400, return_mode='both')
+                    st.subheader("B2B Summary")
+                    AgGrid(B2B_Report, height=300, return_mode='both')
+                    
 
 
                     # B2B Complete 
@@ -253,8 +260,8 @@ def main():
 
                     B2C_Report = pd.concat([B2C_Report.iloc[:,:2],B2C_Report[new]], axis = 1)
                     B2C = pd.DataFrame(B2B_Report) 
-
-                    AgGrid(B2C_Report, height=400, return_mode='both')
+                    st.subheader("B2C Summary")
+                    AgGrid(B2C_Report, height=300, return_mode='both')
 
 
 
