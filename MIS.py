@@ -287,7 +287,7 @@ def main():
                         href = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="selected.xlsx">Download data as Excel</a>'
                         st.markdown(href, unsafe_allow_html=True)
         except:
-            st.error(f"An error occurred: {e}")
+            st.error(f"An error occurred")
 # Calling Main Function
 if __name__ == "__main__":
     main()
