@@ -343,19 +343,19 @@ def MIS_add(CC_dump,Logistics_Dimension):
     
     merged_data_new.loc[merged_data_new["Document Header Text"].isnull(), "Document Header Text"] = ""
     merged_data_new.loc[:, "Document Header Text"] = merged_data_new["Document Header Text"].str.lower()
-    date_threshold = pd.to_datetime("2024-02-01")
+    
     merged_data_new.loc[((merged_data_new["Document Header Text"].str.contains("warehouse charges") &
                  merged_data_new["MIS Classification"].str.contains("B2C")) &
-                 (merged_data_new["Posting Date"] >= date_threshold)), "MIS Classification"] = "WH Rent - B2C"
+                 (merged_data_new["Posting Date"] >= "2024-02-01")), "MIS Classification"] = "WH Rent - B2C"
     merged_data_new.loc[((merged_data_new["Document Header Text"].str.contains("warehouse charges") &
                  merged_data_new["MIS Classification"].str.contains("B2B")) &
-                 (merged_data_new["Posting Date"] >= date_threshold)), "MIS Classification"] = "WH Rent - B2B"
+                 (merged_data_new["Posting Date"] >= "2024-02-01")), "MIS Classification"] = "WH Rent - B2B"
     merged_data_new.loc[((merged_data_new["Document Header Text"].str.contains("wms prov") &
                      merged_data_new["MIS Classification"].str.contains("B2C")) &
-                     (merged_data_new["Posting Date"] >= date_threshold)), "MIS Classification"] = "WH Rent - B2C"
+                     (merged_data_new["Posting Date"] >= "2024-02-01")), "MIS Classification"] = "WH Rent - B2C"
     merged_data_new.loc[((merged_data_new["Document Header Text"].str.contains("wms prov") &
                      merged_data_new["MIS Classification"].str.contains("B2B")) &
-                     (merged_data_new["Posting Date"] >= date_threshold)), "MIS Classification"] = "WH Rent - B2B"
+                     (merged_data_new["Posting Date"] >= "2024-02-01")), "MIS Classification"] = "WH Rent - B2B"
     
     
     
@@ -430,17 +430,22 @@ def MIS_add(CC_dump,Logistics_Dimension):
     year.sort()
     new = []
     pattern = ['Jan-','Feb-', 'Mar-', 'Q1-','Apr-', 'May-', 'Jun-', 'Q2-','HY1-','Jul-', 'Aug-', 'Sep-', 'Q3-','Oct-', 'Nov-', 'Dec-','Q4-','HY2-','']
-    col = [k for k in Report.iloc[:,2:].columns]
+    col = [k for k in Report.iloc[:,1:].columns]
     for i in year:
         for j in pattern:
             if (j+i) in col:
                 new.append(j+i)
-    Report = pd.concat([Report.iloc[:,:2],Report[new]], axis = 1)
+    Report = pd.concat([Report.iloc[:,:1],Report[new]], axis = 1)
  
     CN = Report[Report['MIS Classification'] == 'CN - Lost/Discount']
     Net_Total = Report[Report['MIS Classification'] == 'Net Total']
     Report = Report.drop(Report[Report['MIS Classification'] == 'CN - Lost/Discount'].index, axis = 0).reset_index(drop = True)
     Report = Report.drop(Report[Report['MIS Classification'] == 'Net Total'].index, axis = 0).reset_index(drop = True)
+    
+    Report_len = len(Report)
+    Report.loc[Report_len, 'MIS Classification'] = "Grand Total"
+    for j in new:
+        Report.loc[Report_len, j] = Report[j][0:Report_len].sum()
  
     numeric_columns = Report.select_dtypes(include=['number']).columns
     Report[numeric_columns] = Report[numeric_columns].applymap(lambda x: '{:.2f}'.format(x / 10000000))
@@ -452,26 +457,26 @@ def MIS_add(CC_dump,Logistics_Dimension):
     Report[columns_to_convert] = Report[columns_to_convert].astype(float)
     numeric_columns = Report.select_dtypes(include=['number']).columns
     Report[numeric_columns] = Report[numeric_columns].applymap(lambda x: round(x / 10000000, 2))
- 
+    
     def custom_sort_key(x):
-        if x == 'Logistics and freight':
-            return 0  
-        elif x == 'WH Rent':
-            return 1  
-        elif x == 'Packaging':
-            return 2
-        elif x == 'Insurance':
-            return 3
-        elif x == 'Salary':
-            return 4
-        elif x == 'Travel & Others':
-            return 5
-        else:
-            return 6
+      if x == 'Logistics and freight':
+          return 0  
+      elif x == 'WH Rent':
+          return 1  
+      elif x == 'Packaging':
+          return 2
+      elif x == 'Insurance':
+          return 3
+      elif x == 'Salary':
+          return 4
+      elif x == 'Travel & Others':
+          return 5
+      else:
+          return 6
     Report['sort_key'] = Report['MIS Classification'].apply(custom_sort_key)  
     Report = Report.sort_values(by='sort_key')
     Report = Report.drop(columns=['sort_key'])    
-    
+
     return Report
    
 # Total Finish
