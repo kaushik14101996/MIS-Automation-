@@ -557,10 +557,10 @@ def main():
                     AgGrid(B2C_Report, height=400, return_mode='both')
                    
                     st.subheader("B2B + B2C")
-                    AgGrid(Report, height=300, return_mode='both')
+                    AgGrid(Report, height=400, return_mode='both')
                    
                     st.subheader("Not Matching Records")
-                    AgGrid(merged_data_1, height=300, return_mode='both')
+                    AgGrid(merged_data_1, height=400, return_mode='both')
                    
                     excel_buffer = BytesIO()
                     merged_data_1.to_excel(excel_buffer, index=False, engine='openpyxl')
