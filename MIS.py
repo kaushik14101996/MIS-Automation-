@@ -343,19 +343,19 @@ def MIS_add(CC_dump,Logistics_Dimension):
     
     merged_data_new.loc[merged_data_new["Document Header Text"].isnull(), "Document Header Text"] = ""
     merged_data_new.loc[:, "Document Header Text"] = merged_data_new["Document Header Text"].str.lower()
-    
+    date_threshold = pd.to_datetime("2024-02-01")
     merged_data_new.loc[((merged_data_new["Document Header Text"].str.contains("warehouse charges") &
                  merged_data_new["MIS Classification"].str.contains("B2C")) &
-                 (merged_data_new["Posting Date"] >= "2024-02-01")), "MIS Classification"] = "WH Rent - B2C"
+                 (merged_data_new["Posting Date"] >= date_threshold)), "MIS Classification"] = "WH Rent - B2C"
     merged_data_new.loc[((merged_data_new["Document Header Text"].str.contains("warehouse charges") &
                  merged_data_new["MIS Classification"].str.contains("B2B")) &
-                 (merged_data_new["Posting Date"] >= "2024-02-01")), "MIS Classification"] = "WH Rent - B2B"
+                 (merged_data_new["Posting Date"] >= date_threshold)), "MIS Classification"] = "WH Rent - B2B"
     merged_data_new.loc[((merged_data_new["Document Header Text"].str.contains("wms prov") &
                      merged_data_new["MIS Classification"].str.contains("B2C")) &
-                     (merged_data_new["Posting Date"] >= "2024-02-01")), "MIS Classification"] = "WH Rent - B2C"
+                     (merged_data_new["Posting Date"] >= date_threshold)), "MIS Classification"] = "WH Rent - B2C"
     merged_data_new.loc[((merged_data_new["Document Header Text"].str.contains("wms prov") &
                      merged_data_new["MIS Classification"].str.contains("B2B")) &
-                     (merged_data_new["Posting Date"] >= "2024-02-01")), "MIS Classification"] = "WH Rent - B2B"
+                     (merged_data_new["Posting Date"] >= date_threshold)), "MIS Classification"] = "WH Rent - B2B"
     
     
     
