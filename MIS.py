@@ -23,8 +23,8 @@ def login():
     login_button = st.sidebar.button("Login")
     return username, password, login_button
  
-correct_username = "a"
-correct_password = "a"
+correct_username = ""MIS Logistic
+correct_password = "Quation@Xiaomi"
  
 # Username and password Check Function
 def login_check(username, password):
