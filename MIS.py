@@ -339,6 +339,7 @@ def fun_B2C(merged_data,B2C_merged_data_new):
 @st.cache_data
 def MIS_add(CC_dump,Logistics_Dimension):
     merged_data_new = pd.merge(CC_dump, Logistics_Dimension, on = ['Company Code', 'Cost Center', 'Cost Element'], how = 'left')
+    merged_data_new['MIS Classification'].fillna('', inplace=True)
     # New
     
     merged_data_new.loc[merged_data_new["Document Header Text"].isnull(), "Document Header Text"] = ""
