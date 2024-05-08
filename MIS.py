@@ -344,7 +344,9 @@ def MIS_add(CC_dump,Logistics_Dimension):
     
     merged_data_new.loc[merged_data_new["Document Header Text"].isnull(), "Document Header Text"] = ""
     merged_data_new.loc[:, "Document Header Text"] = merged_data_new["Document Header Text"].str.lower()
+    
     date_threshold = pd.to_datetime("2024-02-01")
+    
     merged_data_new.loc[((merged_data_new["Document Header Text"].str.contains("warehouse charges") &
                  merged_data_new["MIS Classification"].str.contains("B2C")) &
                  (merged_data_new["Posting Date"] >= date_threshold)), "MIS Classification"] = "WH Rent - B2C"
@@ -429,6 +431,7 @@ def MIS_add(CC_dump,Logistics_Dimension):
     Report = pd.concat([PT_data, PT_data_HY.iloc[:,1:], PT_data_Q.iloc[:,1:], PT_data_Y.iloc[:,1:]], axis = 1)
     year = [str(x) for x in merged_data_new['year'].unique()]
     year = [x for x in merged_data_new['year'].unique()]
+    year = [str(x) for x in merged_data_new['year'].unique()]
     year.sort()
     new = []
     pattern = ['Jan-','Feb-', 'Mar-', 'Q1-','Apr-', 'May-', 'Jun-', 'Q2-','HY1-','Jul-', 'Aug-', 'Sep-', 'Q3-','Oct-', 'Nov-', 'Dec-','Q4-','HY2-','']
