@@ -58,7 +58,7 @@ def preprocess_data(CC_dump_upload,Logistics_Dimension_upload):
     Logistics_Dimension = pd.read_excel(Logistics_Dimension_upload, dtype='object')
     c1=pd.DataFrame(CC_dump)
     l1=pd.DataFrame(Logistics_Dimension)
-    c1.dropna(subset=['Cost Element'],inplace=True,axis=0)
+    c1.dropna(subset=['Cost Center'],inplace=True,axis=0)
     l1.dropna(subset=['Company Code'],inplace=True,axis=0)
     Logistics_Dimension = Logistics_Dimension.drop_duplicates()
     Logistics_Dimension['Concat'] = Logistics_Dimension['Company Code'].astype('str') + Logistics_Dimension['Cost Center'] + Logistics_Dimension['GL Code'].astype('str')
