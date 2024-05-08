@@ -427,6 +427,7 @@ def MIS_add(CC_dump,Logistics_Dimension):
                                            columns = ['year'], aggfunc = 'sum', margins = True, margins_name = 'Net Total', fill_value = 0).reset_index()
     PT_data_Y = PT_data_Y.drop(['Net Total'], axis = 1)
     Report = pd.concat([PT_data, PT_data_HY.iloc[:,1:], PT_data_Q.iloc[:,1:], PT_data_Y.iloc[:,1:]], axis = 1)
+    year = [str(x) for x in merged_data_new['year'].unique()]
     year = [x for x in merged_data_new['year'].unique()]
     year.sort()
     new = []
